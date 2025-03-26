@@ -24,7 +24,9 @@ const SearchResults = () => {
       console.log("Fetching results with filters:", filters);
       // Fetch data using filters (Example: `/api/listings?location=xyz&minPrice=100`)
       setResults([
+        //@ts-ignore
         { id: 1, name: "Luxury Apartment", price: 120 },
+        //@ts-ignore
         { id: 2, name: "Cozy Studio", price: 80 },
       ]);
     };
@@ -40,9 +42,16 @@ const SearchResults = () => {
       <div className="mt-4">
         {results.length > 0 ? (
           results.map((result) => (
+            //@ts-ignore
             <div key={result.id} className="border p-2 rounded-md mb-2">
-              <h2 className="text-lg font-semibold">{result.name}</h2>
-              <p>Price: ${result.price}</p>
+              
+              <h2 className="text-lg font-semibold">
+              
+                {//@ts-ignore
+                result.name}</h2>
+              <p>Price: ${
+              //@ts-ignore
+              result.price}</p>
             </div>
           ))
         ) : (

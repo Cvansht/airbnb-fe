@@ -1,7 +1,8 @@
 import { FaGlobe, FaUserCircle, FaBars } from "react-icons/fa";
-import { MainLogo } from "../assets/Airbnb.tsx"; // Adjust path if needed
-import "@fontsource/poppins";
-// import SearchBar from "./SearchBar.tsx";
+import { MainLogo } from "../assets/Airbnb.tsx";
+
+
+
 
 const Navbar = () => {
   return (

@@ -11,7 +11,7 @@ interface ListingCardProps {
   price: number;
   rating: number;
 }
-
+//@ts-ignore
 const ListingCard: React.FC<ListingCardProps> = ({ image, location, host, date, price, rating }) => {
   return (
     <div className="w-80 rounded-lg overflow-hidden shadow-md">

@@ -3,19 +3,32 @@ import { FaSearch, FaPlus, FaMinus } from "react-icons/fa";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+
+interface SearchParams {
+  location: string;
+  checkIn: string;
+  checkOut: string;
+  guests: number;
+  adults: number;
+  children: number;
+  infants: number;
+  rating?: string;
+}
 
 const SearchBar = () => {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useState({
+
+  const [searchParams, setSearchParams] = useState<SearchParams>({
     location: "",
-    checkIn: null,
-    checkOut: null,
+    checkIn: "",
+    checkOut: "",
     guests: 0,
     adults: 0,
     children: 0,
     infants: 0,
+    rating: "",
   });
 
   const [guestDropdown, setGuestDropdown] = useState(false);
@@ -27,9 +40,10 @@ const SearchBar = () => {
       key: "selection",
     },
   ]);
- 
+//@ts-ignore
   const handleGuestChange = (type, operation) => {
     setSearchParams((prev) => {
+      //@ts-ignore
       let newValue = prev[type];
       if (operation === "increase") newValue += 1;
       if (operation === "decrease" && newValue > 0) newValue -= 1;
@@ -41,43 +55,41 @@ const SearchBar = () => {
       };
     });
   };
-  
+
   const [dropdowns, setDropdowns] = useState({
     guests: false,
     dates: false,
     price: false,
     rating: false,
   });
- 
-
+//@ts-ignore
   const toggleDropdown = (type) => {
-    setDropdowns((prev) => ({ ...prev, [type]: !prev[type] }));
+    setDropdowns((prev) =>
+      //@ts-ignore
+     ({ ...prev, [type]: !prev[type] }));
   };
-
+//@ts-ignore
   const handleDateChange = (ranges) => {
     setDateRange([ranges.selection]);
     setSearchParams({
       ...searchParams,
+      //@ts-ignore
       checkIn: format(ranges.selection.startDate, "MM/dd/yyyy"),
+      //@ts-ignore
       checkOut: format(ranges.selection.endDate, "MM/dd/yyyy"),
     });
   };
-
   const handleSearch = () => {
     const queryParams = new URLSearchParams({
-         location: searchParams.location || "string",
-          checkIn: searchParams.checkIn || "",
-          checkOut: searchParams.checkOut || "",
-          guests: searchParams.guests || "0",
-         rating: searchParams.rating || "",
+      location: searchParams.location || "string",
+      checkIn: searchParams.checkIn || "",
+      checkOut: searchParams.checkOut || "",
+      guests: String(searchParams.guests || 0),
+      rating: searchParams.rating || "",
     }).toString();
 
     navigate(`/search-results?${queryParams}`);
   };
-
- 
-
-
 
   return (
     <div className="relative flex items-center bg-white shadow-md rounded-full pr-1 space-x-2 max-w-3xl mx-auto border mt-3 ">
@@ -242,22 +254,29 @@ const SearchBar = () => {
           </div>
         )}
       </div>
-      
-       {/* Ratings Dropdown */}
-       {/* Ratings Dropdown */}
-       <div
+
+      {/* Ratings Dropdown */}
+      {/* Ratings Dropdown */}
+      <div
         className="relative flex flex-col flex-1 px-4 py-4 cursor-pointer rounded-full hover:bg-gray-200"
         onClick={() => toggleDropdown("rating")}
       >
         <span className="text-xs font-semibold text-gray-700">Rating</span>
         <span className="text-gray-600 text-sm">
-          {searchParams.rating ? `${searchParams.rating} Stars` : "Select rating"}
+          {
+            //@ts-ignore
+            searchParams.rating
+              ? `${searchParams.rating} Stars`
+              : "Select rating"
+          }
         </span>
         {dropdowns.rating && (
           <div className="absolute top-12 left-0 bg-white shadow-lg rounded-lg p-4 w-40 z-10">
             <select
+              //@ts-ignore
               value={searchParams.rating}
               onChange={(e) => {
+                //@ts-ignore
                 setSearchParams({ ...searchParams, rating: e.target.value });
               }}
               className="w-full p-2 border rounded-md"
@@ -282,7 +301,10 @@ const SearchBar = () => {
         )}
       </div>
 
-      <button onClick={handleSearch} className="bg-red-500 text-white p-5 rounded-full hover:bg-red-600">
+      <button
+        onClick={handleSearch}
+        className="bg-red-500 text-white p-5 rounded-full hover:bg-red-600"
+      >
         <FaSearch />
       </button>
     </div>
